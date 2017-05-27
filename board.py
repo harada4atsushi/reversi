@@ -1,3 +1,6 @@
+from gameplay import valid
+
+
 class Board:
     def print(self, board):
         """ Print a board, with letters and numbers as guides """
@@ -25,3 +28,12 @@ class Board:
                 elif (square == "W"):
                     white = white + 1
         return (black, white)
+
+
+    def valid_positions(self, board, player):
+        moves = []
+        for i in range(4):
+            for j in range(4):
+                if valid(board, player.color, (i, j)):
+                    moves.append((i, j))
+        return moves
