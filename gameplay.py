@@ -1,3 +1,4 @@
+import argparse
 import sys
 import time
 import getopt
@@ -133,50 +134,30 @@ def score(board):
 ##options: -r is reversed game; -v is verbose (print board & time after each move)
 ##  -t is a time to play (other than the default)
 if __name__ == "__main__":
-    try:
-        optlist,args=getopt.getopt(sys.argv[1:],'vt:r')
-    except getopt.error:
-        print("Usage: python %s {-r} {-v} {-t time} player1 player2" % (sys.argv[0]))
-        exit()
-
     verbose = False
     clockTime = 320.0
     reversed = ""
-    for (op,opVal) in optlist:
-        if (op == "-v"):
-            verbose = True
-        if (op == "-t"):
-            clockTime = float(opVal)
-        if (op == "-r"):
-            reversed = "R"
-    s1 = "from " + args[0] + " import nextMove" + reversed;
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('player1', default='randomPlay', type=str)
+    parser.add_argument('player2', default='randomPlay', type=str)
+    args = parser.parse_args()
+
+    s1 = "from " + args.player1 + " import nextMove" + reversed;
     print(s1)
-    s2 = "from " + args[1] + " import nextMove" + reversed;
+    s2 = "from " + args.player2 + " import nextMove" + reversed;
     print(s2)
-    exec("from " + args[0] + " import nextMove"+reversed)
+    exec("from " + args.player1 + " import nextMove"+reversed)
     if (reversed != "R"):
         p1 = nextMove
     else:
         p1 = nextMoveR
-    exec("from " + args[1] + " import nextMove"+reversed)
+    exec("from " + args.player2 + " import nextMove"+reversed)
     if (reversed != "R"):
         p2 = nextMove
     else:
         p2 = nextMoveR
 
     from organizer import Organizer
-    organizer = Organizer()
-    res = organizer.play_game(p1, p2, verbose, clockTime)
-
-    if (len(res) == 4):
-        print(res[3])
-        if (res[0] > res[1]):
-            print("%s Wins %s Loses (%d to %d)" %(args[0], args[1], res[0], res[1]))
-        else:
-            print("%s Wins %s Loses (%d to %d)" %(args[1], args[0], res[1], res[0]))
-    elif ((res[0] > res[1]) and reversed != "R") or ((res[0] < res[1]) and reversed == "R"):
-        print("%s Wins %s Loses (%d to %d)" %(args[0], args[1], res[0], res[1]))
-    elif ((res[0] < res[1]) and reversed != "R") or ((res[0] > res[1]) and reversed == "R"):
-        print("%s Wins %s Loses (%d to %d)" %(args[1], args[0], res[1], res[0]))
-    else:
-        print("TIE %s, %s, (%d to %d)" % (args[1], args[0], res[1], res[0]))
+    organizer = Organizer(nplay=1000, show_board=False, show_result=False)
+    organizer.play_game(p1, p2, args.player1, args.player2, verbose, clockTime)
