@@ -1,9 +1,4 @@
 import argparse
-import sys
-import time
-import getopt
-
-
 
 
 def opponent(x):
@@ -131,6 +126,16 @@ def score(board):
     return (black, white)
 
 
+def get_player_instance(player_str):
+    from player.random_player import RandomPlayer
+
+    if player_str == 'random':
+        return RandomPlayer()
+    else:
+        return RandomPlayer()
+
+
+
 ##options: -r is reversed game; -v is verbose (print board & time after each move)
 ##  -t is a time to play (other than the default)
 if __name__ == "__main__":
@@ -139,25 +144,28 @@ if __name__ == "__main__":
     reversed = ""
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('player1', type=str)
-    parser.add_argument('player2', type=str)
+    parser.add_argument('--p1', default='random', type=str)
+    parser.add_argument('--p2', default='random', type=str)
     args = parser.parse_args()
 
-    s1 = "from " + args.player1 + " import nextMove" + reversed;
-    print(s1)
-    s2 = "from " + args.player2 + " import nextMove" + reversed;
-    print(s2)
-    exec("from " + args.player1 + " import nextMove"+reversed)
-    if (reversed != "R"):
-        p1 = nextMove
-    else:
-        p1 = nextMoveR
-    exec("from " + args.player2 + " import nextMove"+reversed)
-    if (reversed != "R"):
-        p2 = nextMove
-    else:
-        p2 = nextMoveR
+    p1 = get_player_instance(args.p1)
+    p2 = get_player_instance(args.p2)
+
+    # s1 = "from " + args.p1 + " import nextMove" + reversed;
+    # print(s1)
+    # s2 = "from " + args.p2 + " import nextMove" + reversed;
+    # print(s2)
+    # exec("from " + args.p1 + " import nextMove"+reversed)
+    # if (reversed != "R"):
+    #     p1 = nextMove
+    # else:
+    #     p1 = nextMoveR
+    # exec("from " + args.p2 + " import nextMove"+reversed)
+    # if (reversed != "R"):
+    #     p2 = nextMove
+    # else:
+    #     p2 = nextMoveR
 
     from organizer import Organizer
     organizer = Organizer(nplay=1000, show_board=False, show_result=False)
-    organizer.play_game(p1, p2, args.player1, args.player2, verbose, clockTime)
+    organizer.play_game(p1.nextMove, p2.nextMove, args.p1, args.p2, verbose, clockTime)
