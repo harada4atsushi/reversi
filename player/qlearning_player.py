@@ -7,8 +7,9 @@ from board import Board
 
 class QlearningPlayer:
     INF = float('inf')
+    DEFAULT_E = 0.2
 
-    def __init__(self, color, e=0.2, alpha=0.3):
+    def __init__(self, color, e=DEFAULT_E, alpha=0.3):
         self.color = color
         self.name = 'ql'
         self._e = e
@@ -32,9 +33,6 @@ class QlearningPlayer:
 
 
     def policy(self, board_data, color):
-        # ゲーム回数が少ない間は、ある程度の確率で打ち手をランダムにする
-        # if random.random() < (self._e / (self._total_game_count // 10000 + 1)):
-        #     print('do random action')
         self._last_board = Board(board_data.copy())
         board = Board(board_data)
         positions = board.valid_positions(self)
@@ -42,28 +40,37 @@ class QlearningPlayer:
         if len(positions) == 0:
             return "pass"
 
-
-        qs = []
-        for position in positions:
-            qs.append(self.get_q(tuple(self._last_board.flattend_data()), position))
-
-        max_q = max(qs)
-
-        if qs.count(max_q) > 1:
-            # more than 1 best option; choose among them randomly
-            best_options = [i for i in range(len(positions)) if qs[i] == max_q]
-            i = random.choice(best_options)
+        # ゲーム回数が少ない間は、ある程度の確率で打ち手をランダムにする
+        if random.random() < (self._e / (self._total_game_count // 10000 + 1)):
+            move = random.choice(positions)
         else:
-            i = qs.index(max_q)
+            qs = []
+            for position in positions:
+                qs.append(self.get_q(tuple(self._last_board.flattend_data()), position))
 
-        self._last_move = positions[i]
-        return positions[i]
+            # for debug
+            if self._total_game_count > 9000 and self._total_game_count % 300 == 0:
+                print(positions)
+                print(qs)
+
+            max_q = max(qs)
+
+            if qs.count(max_q) > 1:
+                # more than 1 best option; choose among them randomly
+                best_options = [i for i in range(len(positions)) if qs[i] == max_q]
+                i = random.choice(best_options)
+            else:
+                i = qs.index(max_q)
+            move = positions[i]
+
+        self._last_move = move
+        return move
 
 
     def get_q(self, state, act):
         # encourage exploration; "optimistic" 1.0 initial values
         if self._q.get((state, act)) is None:
-            self._q[(state, act)] = 2  # default 1
+            self._q[(state, act)] = 1  # default 1
         return self._q.get((state, act))
 
 
@@ -82,21 +89,10 @@ class QlearningPlayer:
 
         self.learn(self._last_board, self._last_move, reward, board)
 
-        # r = 0
-        # if self.last_move is not None:
-        #     if board.winner is None:
-        #         self.learn(self.last_board, self.last_move, 0, board)
-        #         pass
-        #     else:
-        #         if board.winner == self.myturn:
-        #             self.learn(self.last_board, self.last_move, 1, board)
-        #         elif board.winner != DRAW:
-        #             self.learn(self.last_board, self.last_move, -1, board)
-        #         else:
-        #             self.learn(self.last_board, self.last_move, 0, board)
-        #         self.totalgamecount += 1
-        #         self.last_move = None
-        #         self.last_board = None
+        if not game_ended:
+            self._total_game_count += 1
+            self._last_move = None
+            self._last_board = None
 
 
     def learn(self, s, a, r, fs):
@@ -119,4 +115,10 @@ class QlearningPlayer:
         # else:
         #     maxQnew = max([self.getQ(tuple(fs.board), act) for act in fs.get_possible_pos()])
         # self.q[(tuple(s.board), a)] = pQ + self.alpha * ((r + self.gamma * maxQnew) - pQ)
+
+
+    def change_to_battle_mode(self):
+        self._e = 0
+
+
 
