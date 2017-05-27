@@ -6,9 +6,9 @@ from copy import deepcopy
 def opponent(x):
     """ Given a string representing a color (must be either "B" or "W"),
         return the opposing color """ 
-    if x == "b" or x == "B":
+    if x == "b" or x == "B" or x == '●':
         return "W"
-    elif x == "w" or x == "W":
+    elif x == "w" or x == "W" or x == '◯':
         return "B"
     else:
         return "."
@@ -34,8 +34,8 @@ def valid(board, color, move):
         position or the string "pass", return true if the move
         is a valid for the color """
     if move == "pass":
-        for i in range(0,8):
-            for j in range(0,8):
+        for i in range(0,4):
+            for j in range(0,4):
                 if validMove(board, color, (i,j)):
                     return False
         return True
@@ -45,7 +45,7 @@ def valid(board, color, move):
 
 def validPos(x,y):
     """ Return true of the (x,y) position is within the board """
-    return x >= 0 and x < 8 and y >= 0 and y < 8
+    return x >= 0 and x < 4 and y >= 0 and y < 4
 
 def doFlip(board, color, pos, direction):
     """ Given a 2D array representing a board, a color, a position
@@ -102,25 +102,28 @@ def newBoard():
     """ Create a new board:  2D array of strings:
         'B' for black, 'W' for white, and '.' for empty """
     result = []
-    for i in range(3):
-        result = result + [["."]*8]
-    result = result + [["."] * 3 + ["W","B"] + ["."] * 3]
-    result = result + [["."] * 3 + ["B","W"] + ["."] * 3]
-    for i in range(3):
-        result = result + [["."]*8]
+    for i in range(1):
+        result = result + [["."]*4]
+    result = result + [["."] * 1 + ["W","B"] + ["."] * 1]
+    result = result + [["."] * 1 + ["B","W"] + ["."] * 1]
+    for i in range(1):
+        result = result + [["."]*4]
     return result
 
 
 def printBoard(board):
     """ Print a board, with letters and numbers as guides """
-    print " " + "".join(map(chr, range(ord('A'), ord('H') + 1)))
+    print("  " + " ".join(map(chr, range(ord('A'), ord('D') + 1))))
     for (x,y) in zip(range(1,9), board):
-        print str(x) + "".join(y) 
-    print("Black = %d, White = %d") % score(board)
+        print(str(x) + ' ' + to_circle(" ".join(y)))
+    print("Black = %d, White = %d" % score(board))
 
     # For fun, here is a one-line board printer, without the
     # row and column labels
     # print "\n".join(["".join(x) for x in board])
+
+def to_circle(str):
+    return str.replace('W', '◯').replace('B', '●')
 
 def gameOver(board):
     """ return true if the game is over, that is, no valid moves """
@@ -154,7 +157,7 @@ def playGame(p1, p2, verbose = False, t = 128):
     p2realTime = t*2
     if verbose:
         printBoard(board)
-        print "START: Clock remaining: %s=%f, %s=%f" %(currColor, p1time, nextColor, p2time)
+        print("START: Clock remaining: %s=%f, %s=%f" %(currColor, p1time, nextColor, p2time))
     while not gameOver(board):       
         tmpBoard = deepcopy(board)
         t1 = time.time()
@@ -165,16 +168,16 @@ def playGame(p1, p2, verbose = False, t = 128):
         #if p1time < 0:
         if (p1realTime < 0):
             if currColor == "B":
-                return (0,64, board, "Timeout")
+                return (0,16, board, "Timeout")
             else:
-                return (64, 0, board, "Timeout")  
+                return (16, 0, board, "Timeout")
         if valid(board, currColor, nextMove):
             doMove(board, currColor, nextMove)
         else:
             if currColor == "B":
-                return (0,64, board, "Bad Move: %s" %str(nextMove))
+                return (0,16, board, "Bad Move: %s" %str(nextMove))
             else:
-                return (64, 0, board, "Bad Move: %s" %str(nextMove))
+                return (16, 0, board, "Bad Move: %s" %str(nextMove))
 
         (p1, p2) = (p2, p1)
         (p1time, p2time) = (p2time, p1time)
@@ -182,9 +185,10 @@ def playGame(p1, p2, verbose = False, t = 128):
         (currColor, nextColor) = (nextColor, currColor)
         if verbose:
             printBoard(board)
-            print "Clock remaining: %s=%f, %s=%f" %(currColor, p1time, nextColor, p2time)
+            print("Clock remaining: %s=%f, %s=%f" %(currColor, p1time, nextColor, p2time))
         
     return score(board) + (board,)
+
 
 ##options: -r is reversed game; -v is verbose (print board & time after each move)
 ##  -t is a time to play (other than the default)
@@ -192,7 +196,7 @@ if __name__ == "__main__":
     try:
         optlist,args=getopt.getopt(sys.argv[1:],'vt:r')
     except getopt.error:
-        print "Usage: python %s {-r} {-v} {-t time} player1 player2" % (sys.argv[0])
+        print("Usage: python %s {-r} {-v} {-t time} player1 player2" % (sys.argv[0]))
         exit()
 
     verbose = False
@@ -206,9 +210,9 @@ if __name__ == "__main__":
         if (op == "-r"):
             reversed = "R"
     s1 = "from " + args[0] + " import nextMove" + reversed;
-    print s1    
+    print(s1)
     s2 = "from " + args[1] + " import nextMove" + reversed;
-    print s2   
+    print(s2)
     exec("from " + args[0] + " import nextMove"+reversed)
     if (reversed != "R"):
         p1 = nextMove
@@ -223,14 +227,14 @@ if __name__ == "__main__":
     res = playGame(p1, p2, verbose, clockTime)
     printBoard(res[2])
     if (len(res) == 4):
-        print res[3]
+        print(res[3])
         if (res[0] > res[1]):
-            print "%s Wins %s Loses (%d to %d)" %(args[0], args[1], res[0], res[1])
+            print("%s Wins %s Loses (%d to %d)" %(args[0], args[1], res[0], res[1]))
         else:
-            print "%s Wins %s Loses (%d to %d)" %(args[1], args[0], res[1], res[0])
+            print("%s Wins %s Loses (%d to %d)" %(args[1], args[0], res[1], res[0]))
     elif ((res[0] > res[1]) and reversed != "R") or ((res[0] < res[1]) and reversed == "R"):
-        print "%s Wins %s Loses (%d to %d)" %(args[0], args[1], res[0], res[1])
+        print("%s Wins %s Loses (%d to %d)" %(args[0], args[1], res[0], res[1]))
     elif ((res[0] < res[1]) and reversed != "R") or ((res[0] > res[1]) and reversed == "R"):
-        print "%s Wins %s Loses (%d to %d)" %(args[1], args[0], res[1], res[0])
+        print("%s Wins %s Loses (%d to %d)" %(args[1], args[0], res[1], res[0]))
     else:
-        print "TIE %s, %s, (%d to %d)" % (args[1], args[0], res[1], res[0])
+        print("TIE %s, %s, (%d to %d)" % (args[1], args[0], res[1], res[0]))
