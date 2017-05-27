@@ -1,10 +1,12 @@
 import time
 from copy import deepcopy
+
+from board import Board
 from gameplay import newBoard, gameOver, valid, doMove, score
 
 
 class Organizer:
-    def play_game(self, p1, p2, verbose=False, t=128):
+    def play_game(self, p1, p2, verbose=False, t=128, show_board=True):
         """ Takes as input two functions p1 and p2 (each of which
             calculates a next move given a board and player color),
             and returns either a tuple containing the score for black,
@@ -50,4 +52,10 @@ class Organizer:
                 printBoard(board)
                 print("Clock remaining: %s=%f, %s=%f" % (currColor, p1time, nextColor, p2time))
 
-        return score(board) + (board,)
+        res = score(board) + (board,)
+
+        if show_board:
+            board = Board()
+            board.print(res[2])
+
+        return res

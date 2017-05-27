@@ -168,9 +168,6 @@ if __name__ == "__main__":
     organizer = Organizer()
     res = organizer.play_game(p1, p2, verbose, clockTime)
 
-    from board import Board
-    board = Board()
-    board.print(res[2])
     if (len(res) == 4):
         print(res[3])
         if (res[0] > res[1]):
