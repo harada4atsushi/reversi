@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="842c3a47-e960-433f-8421-687ba414035a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/player/q_learning_player.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/player/random_player.py" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/randomPlay.py" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/minMax.py" afterPath="$PROJECT_DIR$/player/minmax_player.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gameplay.py" afterPath="$PROJECT_DIR$/gameplay.py" />
     </list>
@@ -26,11 +24,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="gameplay.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="gameplay.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gameplay.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="269">
-              <caret line="141" column="19" selection-start-line="141" selection-start-column="19" selection-end-line="141" selection-end-column="19" />
+            <state relative-caret-position="374">
+              <caret line="134" column="32" selection-start-line="134" selection-start-column="32" selection-end-line="134" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -58,11 +56,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="minMax.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/minMax.py">
+      <file leaf-file-name="minmax_player.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/player/minmax_player.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="130" column="37" selection-start-line="130" selection-start-column="37" selection-end-line="130" selection-end-column="37" />
+            <state relative-caret-position="247">
+              <caret line="77" column="29" selection-start-line="77" selection-start-column="29" selection-end-line="77" selection-end-column="29" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -118,6 +116,7 @@
         <option value="$PROJECT_DIR$/player/random.py" />
         <option value="$PROJECT_DIR$/player/random_player.py" />
         <option value="$PROJECT_DIR$/gameplay.py" />
+        <option value="$PROJECT_DIR$/player/minmax_player.py" />
       </list>
     </option>
   </component>
@@ -417,16 +416,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/minMax.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="130" column="37" selection-start-line="130" selection-start-column="37" selection-end-line="130" selection-end-column="37" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/player/q_learning_player.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
@@ -485,9 +474,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/gameplay.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
-          <caret line="141" column="19" selection-start-line="141" selection-start-column="19" selection-end-line="141" selection-end-column="19" />
+        <state relative-caret-position="374">
+          <caret line="134" column="32" selection-start-line="134" selection-start-column="32" selection-end-line="134" selection-end-column="32" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/player/minmax_player.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="77" column="29" selection-start-line="77" selection-start-column="29" selection-end-line="77" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -128,9 +128,12 @@ def score(board):
 
 def get_player_instance(player_str):
     from player.random_player import RandomPlayer
+    from player.minmax_player import MinmaxPlayer
 
     if player_str == 'random':
         return RandomPlayer()
+    elif player_str == 'minmax':
+        return MinmaxPlayer()
     else:
         return RandomPlayer()
 
@@ -144,7 +147,7 @@ if __name__ == "__main__":
     reversed = ""
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--p1', default='random', type=str)
+    parser.add_argument('--p1', default='minmax', type=str)
     parser.add_argument('--p2', default='random', type=str)
     args = parser.parse_args()
 
