@@ -8,6 +8,11 @@ from board import Board
 class MinmaxPlayer:
     INF = float('inf')
 
+    def __init__(self, color):
+        self.color = color
+        self.name = 'minmax'
+
+
     # def nextMove(self, board, color, time):
     #     self._board = board
     #     self._color = color

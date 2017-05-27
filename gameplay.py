@@ -114,16 +114,16 @@ def gameOver(board):
     return valid(board, "B", 'pass') and valid(board, "W", 'pass')
 
 
-def get_player_instance(player_str):
+def get_player_instance(player_str, color):
     from player.random_player import RandomPlayer
     from player.minmax_player import MinmaxPlayer
 
     if player_str == 'random':
-        return RandomPlayer()
+        return RandomPlayer(color)
     elif player_str == 'minmax':
-        return MinmaxPlayer()
+        return MinmaxPlayer(color)
     else:
-        return RandomPlayer()
+        return RandomPlayer(color)
 
 
 
@@ -139,8 +139,8 @@ if __name__ == "__main__":
     parser.add_argument('--p2', default='random', type=str)
     args = parser.parse_args()
 
-    p1 = get_player_instance(args.p1)
-    p2 = get_player_instance(args.p2)
+    p1 = get_player_instance(args.p1, 'B')
+    p2 = get_player_instance(args.p2, 'W')
 
     # s1 = "from " + args.p1 + " import nextMove" + reversed;
     # print(s1)
@@ -160,4 +160,4 @@ if __name__ == "__main__":
     from organizer import Organizer
     organizer = Organizer(nplay=1000, show_board=False, show_result=False)
     # organizer = Organizer()
-    organizer.play_game(p1.nextMove, p2.nextMove, args.p1, args.p2, verbose, clockTime)
+    organizer.play_game(p1, p2, verbose, clockTime)

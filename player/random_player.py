@@ -3,6 +3,10 @@ from gameplay import valid
 
 class RandomPlayer:
 
+    def __init__(self, color):
+        self.color = color
+        self.name = 'random'
+
     def nextMove(self, board, color, time):
         moves = []
         for i in range(4):
