@@ -147,8 +147,8 @@ if __name__ == "__main__":
     reversed = ""
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--p1', default='minmax', type=str)
-    parser.add_argument('--p2', default='random', type=str)
+    parser.add_argument('--p1', default='random', type=str)
+    parser.add_argument('--p2', default='minmax', type=str)
     args = parser.parse_args()
 
     p1 = get_player_instance(args.p1)

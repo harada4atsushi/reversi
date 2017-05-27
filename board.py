@@ -15,3 +15,8 @@ class Board:
 
     def to_circle(self, str):
         return str.replace('W', '◯').replace('B', '●')
+
+
+    def score(self):
+        print('hoge')
+
