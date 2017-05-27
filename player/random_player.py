@@ -21,3 +21,7 @@ class RandomPlayer:
 
     def nextMoveR(self, board, color, time):
         return self.nextMove(board, color, time)
+
+
+    def getGameResult(self, board_data):
+        pass

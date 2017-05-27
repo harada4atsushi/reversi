@@ -2,6 +2,9 @@ from gameplay import valid
 
 
 class Board:
+    def __init__(self, board_data=None):
+        self.board_data = board_data
+
     def print(self, board):
         """ Print a board, with letters and numbers as guides """
         print("  " + " ".join(map(chr, range(ord('A'), ord('D') + 1))))
@@ -37,3 +40,18 @@ class Board:
                 if valid(board, player.color, (i, j)):
                     moves.append((i, j))
         return moves
+
+
+    def flattend_data(self):
+        return [flatten for inner in self.board_data for flatten in inner]
+
+
+    def color_of_more(self):
+        res = self.score(self.board_data)
+
+        if res[0] > res[1]:
+            return 'B'
+        elif res[0] < res[1]:
+            return 'W'
+        else:
+            return ''

@@ -109,11 +109,6 @@ def newBoard():
     return result
 
 
-def gameOver(board):
-    """ return true if the game is over, that is, no valid moves """
-    return valid(board, "B", 'pass') and valid(board, "W", 'pass')
-
-
 def get_player_instance(player_str, color):
     from player.random_player import RandomPlayer
     from player.minmax_player import MinmaxPlayer

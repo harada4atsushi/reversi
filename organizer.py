@@ -3,7 +3,7 @@ import time
 from copy import deepcopy
 
 from board import Board
-from gameplay import newBoard, gameOver, valid, doMove, get_player_instance
+from gameplay import newBoard, valid, doMove
 
 
 class Organizer:
@@ -42,7 +42,7 @@ class Organizer:
             p1realTime = t * 2  # gives a little extra time to each player
             p2realTime = t * 2
 
-            while not gameOver(board):
+            while not self.game_over(board):
                 tmpBoard = deepcopy(board)
                 t1 = time.time()
                 nextMove = p1.nextMove(tmpBoard, p1.color, p1time)
@@ -62,6 +62,8 @@ class Organizer:
                         return (0, 16, board, "Bad Move: %s" % str(nextMove))
                     else:
                         return (16, 0, board, "Bad Move: %s" % str(nextMove))
+
+                p1.getGameResult(board)
 
                 (p1, p2) = (p2, p1)
                 (p1time, p2time) = (p2time, p1time)
@@ -89,6 +91,9 @@ class Organizer:
         if self._nplay > 1:
             print("Win count, player1(%s): %d, player2(%s): %d, draw: %d" % (
                 player1.name, player1_win_count, player2.name, player2_win_count, draw_count))
+
+        # print(player1._q)
+
 
 
         #     if (len(res) == 4):
@@ -122,4 +127,9 @@ class Organizer:
                 print("TIE %s, %s, (%d to %d)" % (winner, loser, winner_count, loser_count))
             else:
                 print("%s Wins %s Loses (%d to %d)" % (winner, loser, winner_count, loser_count))
+
+
+    def game_over(self, board_data):
+        """ return true if the game is over, that is, no valid moves """
+        return valid(board_data, "B", 'pass') and valid(board_data, "W", 'pass')
 
