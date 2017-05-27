@@ -25,7 +25,7 @@ class MinmaxPlayer:
     def nextMove(self, board, color, time):
         if gameplay.valid(board, color, 'pass'):
             return "pass"
-        depth = 3
+        depth = 5
         # if time <= 170 and time > 100:
         #     depth = 5
         # if time <= 100 and time > 50:

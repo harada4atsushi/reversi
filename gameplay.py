@@ -147,8 +147,8 @@ if __name__ == "__main__":
     reversed = ""
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--p1', default='random', type=str)
-    parser.add_argument('--p2', default='minmax', type=str)
+    parser.add_argument('--p1', default='minmax', type=str)
+    parser.add_argument('--p2', default='random', type=str)
     args = parser.parse_args()
 
     p1 = get_player_instance(args.p1)
@@ -171,4 +171,5 @@ if __name__ == "__main__":
 
     from organizer import Organizer
     organizer = Organizer(nplay=1000, show_board=False, show_result=False)
+    # organizer = Organizer()
     organizer.play_game(p1.nextMove, p2.nextMove, args.p1, args.p2, verbose, clockTime)
