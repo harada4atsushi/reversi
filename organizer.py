@@ -75,7 +75,7 @@ class Organizer:
             if self._show_board:
                 board.print(board)
 
-            res = board.score(board.board_data)
+            res = board.score()
 
             if res[0] > res[1]:
                 player1_win_count += 1

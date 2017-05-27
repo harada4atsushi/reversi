@@ -20,11 +20,11 @@ class Board:
         return str.replace('W', '◯').replace('B', '●')
 
 
-    def score(self, board):
+    def score(self):
         """ returns the current score for the board as a tuple
             containing # of black pieces, # of white pieces """
         black = white = 0
-        for row in board:
+        for row in self.board_data:
             for square in row:
                 if (square == "B"):
                     black = black + 1
@@ -47,7 +47,7 @@ class Board:
 
 
     def color_of_more(self):
-        res = self.score(self.board_data)
+        res = self.score()
 
         if res[0] > res[1]:
             return 'B'
