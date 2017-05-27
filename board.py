@@ -5,12 +5,12 @@ class Board:
     def __init__(self, board_data):
         self.board_data = board_data
 
-    def print(self, board):
+    def print(self):
         """ Print a board, with letters and numbers as guides """
         print("  " + " ".join(map(chr, range(ord('A'), ord('D') + 1))))
-        for (x,y) in zip(range(1,9), board):
+        for (x,y) in zip(range(1,9), self.board_data):
             print(str(x) + ' ' + self.to_circle(" ".join(y)))
-        print("Black = %d, White = %d" % self.score(board))
+        print("Black = %d, White = %d" % self.score())
 
         # For fun, here is a one-line board printer, without the
         # row and column labels

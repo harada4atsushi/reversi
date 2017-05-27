@@ -73,7 +73,7 @@ class Organizer:
 
 
             if self._show_board:
-                board.print(board)
+                board.print()
 
             res = board.score()
 
