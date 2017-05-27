@@ -33,11 +33,11 @@ class Board:
         return (black, white)
 
 
-    def valid_positions(self, board, player):
+    def valid_positions(self, player):
         moves = []
         for i in range(4):
             for j in range(4):
-                if valid(board, player.color, (i, j)):
+                if valid(self.board_data, player.color, (i, j)):
                     moves.append((i, j))
         return moves
 

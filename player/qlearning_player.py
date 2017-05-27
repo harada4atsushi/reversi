@@ -37,7 +37,7 @@ class QlearningPlayer:
         #     print('do random action')
         self._last_board = Board(board_data.copy())
         board = Board(board_data)
-        positions = board.valid_positions(board.board_data, self)
+        positions = board.valid_positions(self)
 
         if len(positions) == 0:
             return "pass"
@@ -104,7 +104,7 @@ class QlearningPlayer:
         pQ = self.get_q(tuple(flattend_data), a)
 
         list = []
-        for position in fs.valid_positions(fs.board_data, self):
+        for position in fs.valid_positions(self):
             list.append(self.get_q(tuple(fs.flattend_data()), position))
 
         if len(list) == 0:
