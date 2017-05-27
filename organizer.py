@@ -36,14 +36,14 @@ class Organizer:
         for i in range(0, self._nplay):
             (p2, p1) = (p1, p2)
 
-            board = newBoard()
+            board = Board(newBoard())
             p1time = t
             p2time = t
             p1realTime = t * 2  # gives a little extra time to each player
             p2realTime = t * 2
 
-            while not self.game_over(board):
-                tmpBoard = deepcopy(board)
+            while not self.game_over(board.board_data):
+                tmpBoard = deepcopy(board.board_data)
                 t1 = time.time()
                 nextMove = p1.nextMove(tmpBoard, p1.color, p1time)
                 t2 = time.time()
@@ -52,18 +52,18 @@ class Organizer:
                 # if p1time < 0:
                 if (p1realTime < 0):
                     if p1.color == "B":
-                        return (0, 16, board, "Timeout")
+                        return (0, 16, board.board_data, "Timeout")
                     else:
-                        return (16, 0, board, "Timeout")
-                if valid(board, p1.color, nextMove):
-                    doMove(board, p1.color, nextMove)
+                        return (16, 0, board.board_data, "Timeout")
+                if valid(board.board_data, p1.color, nextMove):
+                    doMove(board.board_data, p1.color, nextMove)
                 else:
                     if p1.color == "B":
-                        return (0, 16, board, "Bad Move: %s" % str(nextMove))
+                        return (0, 16, board.board_data, "Bad Move: %s" % str(nextMove))
                     else:
-                        return (16, 0, board, "Bad Move: %s" % str(nextMove))
+                        return (16, 0, board.board_data, "Bad Move: %s" % str(nextMove))
 
-                p1.getGameResult(board)
+                p1.getGameResult(board.board_data)
 
                 (p1, p2) = (p2, p1)
                 (p1time, p2time) = (p2time, p1time)
@@ -71,12 +71,11 @@ class Organizer:
 
             # res = score(board) + (board,)
 
-            board_c = Board()
+
             if self._show_board:
+                board.print(board)
 
-                board_c.print(board)
-
-            res = board_c.score(board)
+            res = board.score(board.board_data)
 
             if res[0] > res[1]:
                 player1_win_count += 1

@@ -2,7 +2,7 @@ from gameplay import valid
 
 
 class Board:
-    def __init__(self, board_data=None):
+    def __init__(self, board_data):
         self.board_data = board_data
 
     def print(self, board):
