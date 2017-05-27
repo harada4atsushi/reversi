@@ -1,7 +1,9 @@
 import sys
 import time
 import getopt
-from copy import deepcopy
+
+
+
 
 def opponent(x):
     """ Given a string representing a color (must be either "B" or "W"),
@@ -111,20 +113,6 @@ def newBoard():
     return result
 
 
-def printBoard(board):
-    """ Print a board, with letters and numbers as guides """
-    print("  " + " ".join(map(chr, range(ord('A'), ord('D') + 1))))
-    for (x,y) in zip(range(1,9), board):
-        print(str(x) + ' ' + to_circle(" ".join(y)))
-    print("Black = %d, White = %d" % score(board))
-
-    # For fun, here is a one-line board printer, without the
-    # row and column labels
-    # print "\n".join(["".join(x) for x in board])
-
-def to_circle(str):
-    return str.replace('W', '◯').replace('B', '●')
-
 def gameOver(board):
     """ return true if the game is over, that is, no valid moves """
     return valid(board, "B", 'pass') and valid(board, "W", 'pass') 
@@ -140,54 +128,6 @@ def score(board):
             elif (square == "W"):
                 white = white + 1
     return (black, white)
-
-def playGame(p1, p2, verbose = False, t = 128):
-    """ Takes as input two functions p1 and p2 (each of which
-        calculates a next move given a board and player color),
-        and returns either a tuple containing the score for black,
-        score for white, and final board (for a normal game ending)
-        or a tuple containing the final score for black, final score
-        for white, and the  invalid move (for a game that ends with
-        and invalid move """ 
-    board = newBoard()
-    (currColor, nextColor) = ("B", "W")
-    p1time = t
-    p2time = t
-    p1realTime = t*2 # gives a little extra time to each player
-    p2realTime = t*2
-    if verbose:
-        printBoard(board)
-        print("START: Clock remaining: %s=%f, %s=%f" %(currColor, p1time, nextColor, p2time))
-    while not gameOver(board):       
-        tmpBoard = deepcopy(board)
-        t1 = time.time()
-        nextMove = p1(tmpBoard, currColor, p1time)
-        t2 = time.time()
-        p1time = p1time - (t2 - t1)
-        p1realTime = p1realTime - (t2 - t1)
-        #if p1time < 0:
-        if (p1realTime < 0):
-            if currColor == "B":
-                return (0,16, board, "Timeout")
-            else:
-                return (16, 0, board, "Timeout")
-        if valid(board, currColor, nextMove):
-            doMove(board, currColor, nextMove)
-        else:
-            if currColor == "B":
-                return (0,16, board, "Bad Move: %s" %str(nextMove))
-            else:
-                return (16, 0, board, "Bad Move: %s" %str(nextMove))
-
-        (p1, p2) = (p2, p1)
-        (p1time, p2time) = (p2time, p1time)
-        (p1realTime, p2realTime) = (p2realTime, p1realTime)
-        (currColor, nextColor) = (nextColor, currColor)
-        if verbose:
-            printBoard(board)
-            print("Clock remaining: %s=%f, %s=%f" %(currColor, p1time, nextColor, p2time))
-        
-    return score(board) + (board,)
 
 
 ##options: -r is reversed game; -v is verbose (print board & time after each move)
@@ -224,8 +164,13 @@ if __name__ == "__main__":
     else:
         p2 = nextMoveR
 
-    res = playGame(p1, p2, verbose, clockTime)
-    printBoard(res[2])
+    from organizer import Organizer
+    organizer = Organizer()
+    res = organizer.play_game(p1, p2, verbose, clockTime)
+
+    from board import Board
+    board = Board()
+    board.print(res[2])
     if (len(res) == 4):
         print(res[3])
         if (res[0] > res[1]):
