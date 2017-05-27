@@ -2,6 +2,7 @@
 from copy import deepcopy
 
 import gameplay
+from board import Board
 
 
 class MinmaxPlayer:
@@ -25,7 +26,7 @@ class MinmaxPlayer:
     def nextMove(self, board, color, time):
         if gameplay.valid(board, color, 'pass'):
             return "pass"
-        depth = 5
+        depth = 3
         # if time <= 170 and time > 100:
         #     depth = 5
         # if time <= 100 and time > 50:
@@ -155,12 +156,13 @@ class MinmaxPlayer:
 
 
     def utility(self, state, color):
+        board = Board()
         answer = 0
-        if gameplay.score(state)[0] == gameplay.score(state)[1]:
+        if board.score(state)[0] == board.score(state)[1]:
             answer = 0
-        elif gameplay.score(state)[0] < gameplay.score(state)[1] and color == "W":
+        elif board.score(state)[0] < board.score(state)[1] and color == "W":
             answer = self.INF
-        elif gameplay.score(state)[0] > gameplay.score(state)[1] and color == "B":
+        elif board.score(state)[0] > board.score(state)[1] and color == "B":
             answer = self.INF
         else:
             answer = -self.INF

@@ -3,7 +3,7 @@ import time
 from copy import deepcopy
 
 from board import Board
-from gameplay import newBoard, gameOver, valid, doMove, score
+from gameplay import newBoard, gameOver, valid, doMove
 
 
 class Organizer:
@@ -66,11 +66,12 @@ class Organizer:
 
             # res = score(board) + (board,)
 
+            board_c = Board()
             if self._show_board:
-                board_c = Board()
+
                 board_c.print(board)
 
-            res = score(board)
+            res = board_c.score(board)
 
             if res[0] > res[1]:
                 player1_win_count += 1

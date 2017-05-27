@@ -111,19 +111,7 @@ def newBoard():
 
 def gameOver(board):
     """ return true if the game is over, that is, no valid moves """
-    return valid(board, "B", 'pass') and valid(board, "W", 'pass') 
-
-def score(board):
-    """ returns the current score for the board as a tuple
-        containing # of black pieces, # of white pieces """
-    black = white = 0
-    for row in board:
-        for square in row:
-            if (square == "B"):
-                black = black + 1
-            elif (square == "W"):
-                white = white + 1
-    return (black, white)
+    return valid(board, "B", 'pass') and valid(board, "W", 'pass')
 
 
 def get_player_instance(player_str):
