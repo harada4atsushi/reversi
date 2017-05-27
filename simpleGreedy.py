@@ -26,8 +26,8 @@ def nextMoveR(board, color, time):
     
 def nextMove(board, color, time, reversed = False):
     moves = []
-    for i in range(8):
-        for j in range(8):
+    for i in range(4):
+        for j in range(4):
             if gameplay.valid(board, color, (i,j)):
                 moves.append((i,j))
     if len(moves) == 0:

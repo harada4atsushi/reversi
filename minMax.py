@@ -98,8 +98,8 @@ def min_val(state, alpha, beta, depth, color, reversed=False):
 def successors(state, color):
     successors_list = []
     moves = []
-    for i in range(8):
-        for j in range(8):
+    for i in range(4):
+        for j in range(4):
             if gameplay.valid(state, color, (i, j)):
                 moves.append((i, j))
     for moves in moves:
@@ -126,13 +126,22 @@ def utility(state, color):
 ### Implementation of Positional Strategy
 def evaluation(state, color):
     result = 0
+    # 8x8
     weight = [[99,-8,8,6,6,8,-8,99],[-8,-24,-4,-3,-3,-4,-24,-8],
     [8,-4,7,4,4,7,-4,8],[6,-3,4,0,0,4,-3,6],
     [6,-3,4,0,0,4,-3,6],[8,-4,7,4,4,7,-4,8],
     [-8,-24,-4,-3,-3,-4,-24,-8],[99,-8,8,6,6,8,-8,99]]
 
-    for i in range(8):
-        for j in range(8):
+    # 4x4
+    # weight = [
+    #     [10, 6, 6, 10],
+    #     [6, 0, 0, 6],
+    #     [6, 0, 0, 6],
+    #     [10, 6, 6, 10],
+    # ]
+
+    for i in range(4):
+        for j in range(4):
             if state[i][j] == color:
                 result += weight[i][j]
             if state[i][j] == gameplay.opponent(color):

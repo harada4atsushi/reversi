@@ -139,8 +139,8 @@ if __name__ == "__main__":
     reversed = ""
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('player1', default='randomPlay', type=str)
-    parser.add_argument('player2', default='randomPlay', type=str)
+    parser.add_argument('player1', type=str)
+    parser.add_argument('player2', type=str)
     args = parser.parse_args()
 
     s1 = "from " + args.player1 + " import nextMove" + reversed;
