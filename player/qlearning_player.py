@@ -80,7 +80,6 @@ class QlearningPlayer:
         return self._q.get((state, act))
 
 
-    # def getGameResult(self, board_data, game_ended=False):
     def getGameResult(self, board_data):
         board = Board(board_data[:])
         is_game_over = board.is_game_over()

@@ -1,4 +1,6 @@
 import random
+
+from board import Board
 from gameplay import valid
 
 class RandomPlayer:
@@ -7,15 +9,13 @@ class RandomPlayer:
         self.color = color
         self.name = 'random'
 
-    def nextMove(self, board, color, time):
-        moves = []
-        for i in range(4):
-            for j in range(4):
-                if valid(board, color, (i,j)):
-                    moves.append((i,j))
-        if len(moves) == 0:
+    def nextMove(self, board_data, color, time):
+        board = Board(board_data)
+        positions = board.valid_positions(self)
+
+        if len(positions) == 0:
             return "pass"
-        bestMove = moves[random.randint(0,len(moves) - 1)]
+        bestMove = positions[random.randint(0,len(positions) - 1)]
         return bestMove
 
 
