@@ -42,7 +42,7 @@ class Organizer:
             p1realTime = t * 2  # gives a little extra time to each player
             p2realTime = t * 2
 
-            while not self.game_over(board.board_data):
+            while not board.is_game_over():
                 tmpBoard = deepcopy(board.board_data)
                 t1 = time.time()
                 nextMove = p1.nextMove(tmpBoard, p1.color, p1time)
@@ -65,7 +65,7 @@ class Organizer:
 
                 # p1.getGameResult(board.board_data, game_ended=self.game_over(board.board_data))
                 p1.getGameResult(board.board_data)
-                
+
                 (p1, p2) = (p2, p1)
                 (p1time, p2time) = (p2time, p1time)
                 (p1realTime, p2realTime) = (p2realTime, p1realTime)
@@ -128,8 +128,4 @@ class Organizer:
             else:
                 print("%s Wins %s Loses (%d to %d)" % (winner, loser, winner_count, loser_count))
 
-
-    def game_over(self, board_data):
-        """ return true if the game is over, that is, no valid moves """
-        return valid(board_data, "B", 'pass') and valid(board_data, "W", 'pass')
 

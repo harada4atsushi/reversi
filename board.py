@@ -55,3 +55,9 @@ class Board:
             return 'W'
         else:
             return ''
+
+
+    def is_game_over(self):
+        """ return true if the game is over, that is, no valid moves """
+        return valid(self.board_data, "B", 'pass') and valid(self.board_data, "W", 'pass')
+

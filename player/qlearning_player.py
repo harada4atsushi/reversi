@@ -83,16 +83,16 @@ class QlearningPlayer:
     # def getGameResult(self, board_data, game_ended=False):
     def getGameResult(self, board_data):
         board = Board(board_data[:])
+        is_game_over = board.is_game_over()
 
         # 相手のターン行動後のQ値を取得するための処理
         # tmp_player = RandomPlayer(gameplay.opponent(self.color))
         # vp = board.valid_positions(tmp_player)
         # if len(vp) != 0:
         #     gameplay.doMove(board.board_data, gameplay.opponent(self.color), random.choice(vp))
-        game_ended = gameplay.valid(board_data, "B", 'pass') and gameplay.valid(board_data, "W", 'pass')
 
         reward = 0
-        if game_ended:
+        if is_game_over:
             color = board.color_of_more()
 
             if color == self.color:
@@ -106,9 +106,9 @@ class QlearningPlayer:
         # if self._total_game_count > 1000:
         #     aaa = 'aaa'
 
-        self.learn(self._last_board, self._last_move, reward, board, game_ended)
+        self.learn(self._last_board, self._last_move, reward, board, is_game_over)
 
-        if not game_ended:
+        if not is_game_over:
             self._total_game_count += 1
             self._last_move = None
             self._last_board = None
