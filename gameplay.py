@@ -156,11 +156,13 @@ if __name__ == "__main__":
     #     p2 = nextMoveR
 
     from organizer import Organizer
-    organizer = Organizer(nplay=10000, show_board=False, show_result=False)
+    organizer = Organizer(nplay=3000, show_board=False, show_result=False)
     # organizer = Organizer()
     organizer.play_game(p1, p2, verbose, clockTime)
 
     # 学習済みのQ-Learningプレイヤーで再度戦わせる
     # organizer = Organizer(nplay=300, show_board=False, show_result=False)
     # p1.change_to_battle_mode()
+    # from player.minmax_player import MinmaxPlayer
+    # p2 = MinmaxPlayer('W')
     # organizer.play_game(p1, p2, verbose, clockTime)

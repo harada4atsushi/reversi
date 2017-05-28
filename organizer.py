@@ -63,8 +63,9 @@ class Organizer:
                     else:
                         return (16, 0, board.board_data, "Bad Move: %s" % str(nextMove))
 
+                # p1.getGameResult(board.board_data, game_ended=self.game_over(board.board_data))
                 p1.getGameResult(board.board_data)
-
+                
                 (p1, p2) = (p2, p1)
                 (p1time, p2time) = (p2time, p1time)
                 (p1realTime, p2realTime) = (p2realTime, p1realTime)

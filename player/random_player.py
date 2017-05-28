@@ -23,5 +23,5 @@ class RandomPlayer:
         return self.nextMove(board, color, time)
 
 
-    def getGameResult(self, board_data):
+    def getGameResult(self, board_data, game_ended=False):
         pass

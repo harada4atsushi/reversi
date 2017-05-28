@@ -3,11 +3,13 @@ from copy import deepcopy
 
 import gameplay
 from board import Board
+from player.random_player import RandomPlayer
 
 
 class QlearningPlayer:
     INF = float('inf')
     DEFAULT_E = 0.2
+    INITIAL_Q = 1  # default 1
 
     def __init__(self, color, e=DEFAULT_E, alpha=0.3):
         self.color = color
@@ -40,6 +42,10 @@ class QlearningPlayer:
         if len(positions) == 0:
             return "pass"
 
+        # for debug
+        # if self._total_game_count > 1000 and self._total_game_count % 100 == 0:
+        #     print(self._total_game_count)
+
         # ゲーム回数が少ない間は、ある程度の確率で打ち手をランダムにする
         if random.random() < (self._e / (self._total_game_count // 10000 + 1)):
             move = random.choice(positions)
@@ -49,9 +55,9 @@ class QlearningPlayer:
                 qs.append(self.get_q(tuple(self._last_board.flattend_data()), position))
 
             # for debug
-            if self._total_game_count > 9000 and self._total_game_count % 300 == 0:
-                print(positions)
-                print(qs)
+            # if self._total_game_count > 9000 and self._total_game_count % 300 == 0:
+            #     # print(positions)
+            #     print(qs)
 
             max_q = max(qs)
 
@@ -70,16 +76,25 @@ class QlearningPlayer:
     def get_q(self, state, act):
         # encourage exploration; "optimistic" 1.0 initial values
         if self._q.get((state, act)) is None:
-            self._q[(state, act)] = 1  # default 1
+            self._q[(state, act)] = self.INITIAL_Q
         return self._q.get((state, act))
 
 
-    def getGameResult(self, board_data, game_ended=False):
-        board = Board(board_data)
-        color = board.color_of_more()
+    # def getGameResult(self, board_data, game_ended=False):
+    def getGameResult(self, board_data):
+        board = Board(board_data[:])
+
+        # 相手のターン行動後のQ値を取得するための処理
+        # tmp_player = RandomPlayer(gameplay.opponent(self.color))
+        # vp = board.valid_positions(tmp_player)
+        # if len(vp) != 0:
+        #     gameplay.doMove(board.board_data, gameplay.opponent(self.color), random.choice(vp))
+        game_ended = gameplay.valid(board_data, "B", 'pass') and gameplay.valid(board_data, "W", 'pass')
 
         reward = 0
         if game_ended:
+            color = board.color_of_more()
+
             if color == self.color:
                 reward = 1
             elif color == '':
@@ -87,15 +102,19 @@ class QlearningPlayer:
             elif color != self.color:
                 reward = -1
 
-        self.learn(self._last_board, self._last_move, reward, board)
+        # for debug
+        # if self._total_game_count > 1000:
+        #     aaa = 'aaa'
+
+        self.learn(self._last_board, self._last_move, reward, board, game_ended)
 
         if not game_ended:
             self._total_game_count += 1
             self._last_move = None
             self._last_board = None
 
+    def learn(self, s, a, r, fs, game_ended):
 
-    def learn(self, s, a, r, fs):
         flattend_data = s.flattend_data()
         pQ = self.get_q(tuple(flattend_data), a)
 
@@ -103,22 +122,29 @@ class QlearningPlayer:
         for position in fs.valid_positions(self):
             list.append(self.get_q(tuple(fs.flattend_data()), position))
 
-        if len(list) == 0:
+        # print(list)
+
+        if game_ended or len(list) == 0:
             max_q_new = 0
         else:
+            # 相手のターン行動後のQ値を取得するための処理
+            # tmp_player = RandomPlayer(gameplay.opponent(self.color))
+            # vp = fs.valid_positions(tmp_player)
+            # if len(vp) != 0:
+            #     gameplay.doMove(fs.board_data, gameplay.opponent(self.color), random.choice(vp))
+            # if len(list) == 0:
+            #     max_q_new = 0
+            # else:
+            #     max_q_new = max(list)
             max_q_new = max(list)
-        self._q[(tuple(flattend_data), a)] = pQ + self._alpha * ((r + self._gamma * max_q_new) - pQ)
 
-        # pQ = self.getQ(tuple(s.board), a)
-        # if fs.winner is not None:
-        #     maxQnew = 0
-        # else:
-        #     maxQnew = max([self.getQ(tuple(fs.board), act) for act in fs.get_possible_pos()])
-        # self.q[(tuple(s.board), a)] = pQ + self.alpha * ((r + self.gamma * maxQnew) - pQ)
+
+        self._q[(tuple(flattend_data), a)] = pQ + self._alpha * ((r + self._gamma * max_q_new) - pQ)
 
 
     def change_to_battle_mode(self):
         self._e = 0
+
 
 
 
