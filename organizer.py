@@ -13,6 +13,7 @@ class Organizer:
         self._show_result = show_result
         self._nplay = nplay
         self._stat = stat
+        self._debug = debug
 
 
     def play_game(self, player1, player2, verbose=False, t=128):
@@ -72,7 +73,7 @@ class Organizer:
                 (p1realTime, p2realTime) = (p2realTime, p1realTime)
 
                 if self._show_board:
-                    if isinstance(p1, QlearningPlayer):
+                    if isinstance(p1, QlearningPlayer) and self._debug:
                         board.print(qplayer=p1)
                     else:
                         board.print()
@@ -95,34 +96,6 @@ class Organizer:
         if self._nplay > 1:
             print("Win count, player1(%s): %d, player2(%s): %d, draw: %d" % (
                 player1.name, player1_win_count, player2.name, player2_win_count, draw_count))
-
-        # print(player1._q)
-
-
-
-        #     if (len(res) == 4):
-        #         print(res[3])
-        #         if (res[0] > res[1]):
-        #             player1_win_count += 1
-        #             self.print_winner(player1, player2, res[0], res[1])
-        #         else:
-        #             player2_win_count += 1
-        #             self.print_winner(player2, player1, res[1], res[0])
-        #     elif ((res[0] > res[1]) and reversed != "R") or ((res[0] < res[1]) and reversed == "R"):
-        #         player1_win_count += 1
-        #         self.print_winner(player1, player2, res[0], res[1])
-        #     elif ((res[0] < res[1]) and reversed != "R") or ((res[0] > res[1]) and reversed == "R"):
-        #         player2_win_count += 1
-        #         self.print_winner(player2, player1, res[1], res[0])
-        #     else:
-        #         draw_count += 1
-        #         self.print_winner(player2, player1, res[1], res[0])
-        #
-        #     if self._nplay > 1 and i % self._stat == 0:
-        #         print("Win count, player1(%s): %d, player2(%s): %d, draw: %d" % (player1, player1_win_count, player2, player2_win_count, draw_count))
-        #
-        # if self._nplay > 1:
-        #     print("Win count, player1(%s): %d, player2(%s): %d, draw: %d" % (player1, player1_win_count, player2, player2_win_count, draw_count))
 
 
     def print_winner(self, winner, loser, winner_count, loser_count):
