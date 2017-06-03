@@ -74,7 +74,7 @@ class Organizer:
 
                 if self._show_board:
                     if isinstance(p1, QlearningPlayer) and self._debug:
-                        board.print(qplayer=p1)
+                        board.print(q=p1.q)
                     else:
                         board.print()
 
