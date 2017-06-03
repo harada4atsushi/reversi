@@ -5,13 +5,10 @@ import gameplay
 from board import Board
 from player.naive_player import NaivePlayer
 from player.quantity import Quantity
-from player.random_player import RandomPlayer
 
 
 class QlearningPlayer:
-    INF = float('inf')
     DEFAULT_E = 0.2
-    INITIAL_Q = 1  # default 1
 
     def __init__(self, color, e=DEFAULT_E, alpha=0.3):
         self.color = color
@@ -26,13 +23,6 @@ class QlearningPlayer:
 
     def next_move(self, board, color):
         return self.policy(board, color)
-
-        # if gameplay.valid(board, color, 'pass'):
-        #     return "pass"
-        # depth = 3
-        #
-        # (move, value) = self.max_val(board, -self.INF, self.INF, depth, color)
-        # return move
 
 
     def policy(self, board_data, color):
@@ -49,12 +39,8 @@ class QlearningPlayer:
 
         # ゲーム回数が少ない間は、ある程度の確率で打ち手をランダムにする
         if random.random() < (self._e / (self._action_count // 10000 + 1)):
-            # print('random')
-        # if self._action_count < 10000:
-        #     print(self._action_count)
             move = random.choice(positions)
         else:
-            # print('use q value')
             qs = []
             for position in positions:
                 qs.append(self.q.get(tuple(self._last_board.flattend_data()), position))
@@ -78,15 +64,13 @@ class QlearningPlayer:
         return move
 
 
-    def getGameResult(self, board_data):
+    def getGameResult(self, board_data, opponent_player=None):
         board = Board(deepcopy(board_data))
-        is_game_over = board.is_game_over()
 
         # 相手のターン行動後のQ値を取得するための処理
-        tmp_player = NaivePlayer(gameplay.opponent(self.color))
-        vp = board.valid_positions(tmp_player)
-        if len(vp) != 0:
-            gameplay.doMove(board.board_data, gameplay.opponent(self.color), random.choice(vp))
+        act = opponent_player.next_move(board.board_data, opponent_player.color)
+        gameplay.doMove(board.board_data, opponent_player.color, act)
+        is_game_over = board.is_game_over()
 
         reward = 0
         if is_game_over:
@@ -99,19 +83,15 @@ class QlearningPlayer:
             elif color != self.color:
                 reward = -1
 
-        # for debug
-        # if self._total_game_count > 1000:
-        #     aaa = 'aaa'
-
         # passしていない場合のみ学習させる
         if self._last_move != None:
-            # TODO: boardの中身が更新されているかチェックする
             self.learn(self._last_board, self._last_move, reward, board, is_game_over)
 
         if not is_game_over:
             self._action_count += 1
             self._last_move = None
             self._last_board = None
+
 
     def learn(self, s, a, r, fs, game_ended):
         flattend_data = s.flattend_data()

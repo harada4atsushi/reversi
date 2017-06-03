@@ -29,5 +29,5 @@ class NaivePlayer:
         return self.next_move(board, color)
 
 
-    def getGameResult(self, board_data, game_ended=False):
+    def getGameResult(self, board_data, game_ended=False, opponent_player=None):
         pass

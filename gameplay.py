@@ -140,7 +140,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--p1', default='ql', type=str)
-    parser.add_argument('--p2', default='naive', type=str)
+    parser.add_argument('--p2', default='random', type=str)
     args = parser.parse_args()
 
     p1 = get_player_instance(args.p1, 'B')
@@ -162,7 +162,7 @@ if __name__ == "__main__":
     #     p2 = nextMoveR
 
     from organizer import Organizer
-    organizer = Organizer(nplay=10000, show_board=False, show_result=False)
+    organizer = Organizer(nplay=20000, show_board=False, show_result=False)
     # organizer = Organizer(nplay=10000, debug=True)
     organizer.play_game(p1, p2, verbose, clockTime)
 
