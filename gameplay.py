@@ -162,8 +162,8 @@ if __name__ == "__main__":
     #     p2 = nextMoveR
 
     from organizer import Organizer
-    # organizer = Organizer(nplay=3000, show_board=False, show_result=False)
-    organizer = Organizer(nplay=50, debug=True)
+    organizer = Organizer(nplay=10000, show_board=False, show_result=False)
+    # organizer = Organizer(nplay=100, debug=True)
     organizer.play_game(p1, p2, verbose, clockTime)
 
     # 学習済みのQ-Learningプレイヤーで再度戦わせる

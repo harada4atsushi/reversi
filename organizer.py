@@ -40,6 +40,9 @@ class Organizer:
             p2 = player1
             p1 = player2
 
+            if self._show_board:
+                print('先攻: %s(%s) vs 後攻: %s(%s)' % (p1.name, p1.color, p2.name, p2.color))
+
             board = Board(newBoard())
             p1time = t
             p2time = t
@@ -76,7 +79,7 @@ class Organizer:
 
                 if self._show_board:
                     if isinstance(p1, QlearningPlayer) and self._debug:
-                        board.print(q=p1.q)
+                        board.print(qplayer=p1)
                     else:
                         board.print()
 

@@ -17,7 +17,7 @@ class QlearningPlayer:
         self.name = 'ql'
         self.q = Quantity(alpha, 0.9)
         self._e = e
-        self._total_game_count = 0
+        self._action_count = 0
         self._last_board = None
         self._last_move = None
 
@@ -46,9 +46,13 @@ class QlearningPlayer:
         #     print(self._total_game_count)
 
         # ゲーム回数が少ない間は、ある程度の確率で打ち手をランダムにする
-        if random.random() < (self._e / (self._total_game_count // 10000 + 1)):
+        if random.random() < (self._e / (self._action_count // 10000 + 1)):
+            # print('random')
+        # if self._action_count < 10000:
+        #     print(self._action_count)
             move = random.choice(positions)
         else:
+            # print('use q value')
             qs = []
             for position in positions:
                 qs.append(self.q.get(tuple(self._last_board.flattend_data()), position))
@@ -97,15 +101,16 @@ class QlearningPlayer:
         # if self._total_game_count > 1000:
         #     aaa = 'aaa'
 
-        self.learn(self._last_board, self._last_move, reward, board, is_game_over)
+        # passしていない場合のみ学習させる
+        if self._last_move != None:
+            self.learn(self._last_board, self._last_move, reward, board, is_game_over)
 
         if not is_game_over:
-            self._total_game_count += 1
+            self._action_count += 1
             self._last_move = None
             self._last_board = None
 
     def learn(self, s, a, r, fs, game_ended):
-
         flattend_data = s.flattend_data()
         # pQ = self.q.get(tuple(flattend_data), a)
 

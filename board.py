@@ -5,16 +5,20 @@ class Board:
     def __init__(self, board_data):
         self.board_data = board_data
 
-    def print(self, q=None):
+    def print(self, qplayer=None):
         """ Print a board, with letters and numbers as guides """
+        if qplayer is not None:
+            positions = self.valid_positions(qplayer)
         print("   " + "  ".join(map(chr, range(ord('A'), ord('D') + 1))))
-        for (x, y) in zip(range(1,9), self.board_data):
+
+        for (x, y) in zip(range(0,4), self.board_data):
             row = y
-            if q is not None:
+            if qplayer is not None:
                 row = []
                 for i, piece in enumerate(y):
-                    if piece == '.':
-                        piece = q.get(tuple(self.flattend_data()), (x,i))
+                    if piece == '.' and (x, i) in positions:
+                        piece = qplayer.q.get(tuple(self.flattend_data()), (x, i))
+                        piece = round(piece, 2)
                     row.append(str(piece))
 
             y_str = self.to_circle("  ".join(row))
