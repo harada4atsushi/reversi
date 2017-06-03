@@ -36,7 +36,7 @@ class Organizer:
         draw_count = 0
 
         for i in range(0, self._nplay):
-            (p2, p1) = (p1, p2)
+            # (p2, p1) = (p1, p2)
 
             board = Board(newBoard())
             p1time = t

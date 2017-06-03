@@ -15,10 +15,8 @@ class QlearningPlayer:
     def __init__(self, color, e=DEFAULT_E, alpha=0.3):
         self.color = color
         self.name = 'ql'
-        self.q = Quantity()
+        self.q = Quantity(alpha, 0.9)
         self._e = e
-        self._alpha = alpha
-        self._gamma = 0.9
         self._total_game_count = 0
         self._last_board = None
         self._last_move = None
@@ -109,7 +107,7 @@ class QlearningPlayer:
     def learn(self, s, a, r, fs, game_ended):
 
         flattend_data = s.flattend_data()
-        pQ = self.q.get(tuple(flattend_data), a)
+        # pQ = self.q.get(tuple(flattend_data), a)
 
         list = []
         for position in fs.valid_positions(self):
@@ -131,8 +129,7 @@ class QlearningPlayer:
             #     max_q_new = max(list)
             max_q_new = max(list)
 
-        new_q = pQ + self._alpha * ((r + self._gamma * max_q_new) - pQ)
-        self.q.set(tuple(flattend_data), a, new_q)
+        self.q.update(tuple(flattend_data), a, r, max_q_new)
 
 
     def change_to_battle_mode(self):
