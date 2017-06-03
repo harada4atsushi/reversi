@@ -22,7 +22,7 @@ class QlearningPlayer:
         self._last_move = None
 
 
-    def nextMove(self, board, color, _):
+    def next_move(self, board, color):
         return self.policy(board, color)
 
         # if gameplay.valid(board, color, 'pass'):

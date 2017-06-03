@@ -13,7 +13,7 @@ class MinmaxPlayer:
         self.name = 'minmax'
 
 
-    def nextMove(self, board, color, time):
+    def next_move(self, board, color):
         if gameplay.valid(board, color, 'pass'):
             return "pass"
         depth = 3

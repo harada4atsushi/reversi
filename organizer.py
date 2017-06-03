@@ -52,7 +52,7 @@ class Organizer:
             while not board.is_game_over():
                 tmpBoard = deepcopy(board.board_data)
                 t1 = time.time()
-                nextMove = p1.nextMove(tmpBoard, p1.color, p1time)
+                next_move = p1.next_move(tmpBoard, p1.color)
                 t2 = time.time()
                 p1time = p1time - (t2 - t1)
                 p1realTime = p1realTime - (t2 - t1)
@@ -62,13 +62,13 @@ class Organizer:
                         return (0, 16, board.board_data, "Timeout")
                     else:
                         return (16, 0, board.board_data, "Timeout")
-                if valid(board.board_data, p1.color, nextMove):
-                    doMove(board.board_data, p1.color, nextMove)
+                if valid(board.board_data, p1.color, next_move):
+                    doMove(board.board_data, p1.color, next_move)
                 else:
                     if p1.color == "B":
-                        return (0, 16, board.board_data, "Bad Move: %s" % str(nextMove))
+                        return (0, 16, board.board_data, "Bad Move: %s" % str(next_move))
                     else:
-                        return (16, 0, board.board_data, "Bad Move: %s" % str(nextMove))
+                        return (16, 0, board.board_data, "Bad Move: %s" % str(next_move))
 
                 # p1.getGameResult(board.board_data, game_ended=self.game_over(board.board_data))
                 p1.getGameResult(board.board_data)

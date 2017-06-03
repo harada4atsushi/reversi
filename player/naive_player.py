@@ -12,7 +12,7 @@ class NaivePlayer:
         self.color = color
         self.name = 'naive'
 
-    def nextMove(self, board_data, color, time):
+    def next_move(self, board_data, color):
         board = Board(board_data)
         positions = board.valid_positions(self)
 
@@ -26,7 +26,7 @@ class NaivePlayer:
 
 
     def nextMoveR(self, board, color, time):
-        return self.nextMove(board, color, time)
+        return self.next_move(board, color)
 
 
     def getGameResult(self, board_data, game_ended=False):
