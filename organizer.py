@@ -37,6 +37,8 @@ class Organizer:
 
         for i in range(0, self._nplay):
             # (p2, p1) = (p1, p2)
+            p2 = player1
+            p1 = player2
 
             board = Board(newBoard())
             p1time = t

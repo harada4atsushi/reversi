@@ -1,5 +1,5 @@
 class Quantity:
-    def __init__(self, alpha, gamma, initial_q = 1):
+    def __init__(self, alpha, gamma, initial_q = 0.5):
         self._initial_q = initial_q
         self._values = {}
         self._alpha = alpha

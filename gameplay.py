@@ -114,6 +114,7 @@ def get_player_instance(player_str, color):
     from player.minmax_player import MinmaxPlayer
     from player.qlearning_player import QlearningPlayer
     from player.human_player import HumanPlayer
+    from player.naive_player import NaivePlayer
 
     if player_str == 'random':
         return RandomPlayer(color)
@@ -123,6 +124,8 @@ def get_player_instance(player_str, color):
         return QlearningPlayer(color)
     elif player_str == 'human':
         return HumanPlayer(color)
+    elif player_str == 'naive':
+        return NaivePlayer(color)
     else:
         return RandomPlayer(color)
 
@@ -137,7 +140,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--p1', default='ql', type=str)
-    parser.add_argument('--p2', default='random', type=str)
+    parser.add_argument('--p2', default='naive', type=str)
     args = parser.parse_args()
 
     p1 = get_player_instance(args.p1, 'B')
