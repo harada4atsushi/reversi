@@ -1,8 +1,9 @@
 import random
-from copy import deepcopy
+from copy import deepcopy, copy
 
 import gameplay
 from board import Board
+from player.naive_player import NaivePlayer
 from player.quantity import Quantity
 from player.random_player import RandomPlayer
 
@@ -16,6 +17,7 @@ class QlearningPlayer:
         self.color = color
         self.name = 'ql'
         self.q = Quantity(alpha, 0.9)
+        self.next_q_list = []
         self._e = e
         self._action_count = 0
         self._last_board = None
@@ -77,14 +79,14 @@ class QlearningPlayer:
 
 
     def getGameResult(self, board_data):
-        board = Board(board_data[:])
+        board = Board(deepcopy(board_data))
         is_game_over = board.is_game_over()
 
         # 相手のターン行動後のQ値を取得するための処理
-        # tmp_player = RandomPlayer(gameplay.opponent(self.color))
-        # vp = board.valid_positions(tmp_player)
-        # if len(vp) != 0:
-        #     gameplay.doMove(board.board_data, gameplay.opponent(self.color), random.choice(vp))
+        tmp_player = NaivePlayer(gameplay.opponent(self.color))
+        vp = board.valid_positions(tmp_player)
+        if len(vp) != 0:
+            gameplay.doMove(board.board_data, gameplay.opponent(self.color), random.choice(vp))
 
         reward = 0
         if is_game_over:
@@ -103,6 +105,7 @@ class QlearningPlayer:
 
         # passしていない場合のみ学習させる
         if self._last_move != None:
+            # TODO: boardの中身が更新されているかチェックする
             self.learn(self._last_board, self._last_move, reward, board, is_game_over)
 
         if not is_game_over:
@@ -118,8 +121,6 @@ class QlearningPlayer:
         for position in fs.valid_positions(self):
             list.append(self.q.get(tuple(fs.flattend_data()), position))
 
-        # print(list)
-
         if game_ended or len(list) == 0:
             max_q_new = 0
         else:
@@ -134,6 +135,8 @@ class QlearningPlayer:
             #     max_q_new = max(list)
             max_q_new = max(list)
 
+        # print('max_q_new: %s' % max_q_new)
+        # self.next_q_list.append(max_q_new)
         self.q.update(tuple(flattend_data), a, r, max_q_new)
 
 

@@ -102,6 +102,9 @@ class Organizer:
             print("Win count, player1(%s): %d, player2(%s): %d, draw: %d" % (
                 player1.name, player1_win_count, player2.name, player2_win_count, draw_count))
 
+            # for q in player1.next_q_list:
+            #     print('next_q: %s' % q)
+
 
     def print_winner(self, winner, loser, winner_count, loser_count):
         if self._show_result:
