@@ -157,7 +157,7 @@ if __name__ == "__main__":
 
     from organizer import Organizer
     # organizer = Organizer(nplay=3000, show_board=False, show_result=False)
-    organizer = Organizer(nplay=3000, debug=True)
+    organizer = Organizer(nplay=10, debug=True)
     organizer.play_game(p1, p2, verbose, clockTime)
 
     # 学習済みのQ-Learningプレイヤーで再度戦わせる

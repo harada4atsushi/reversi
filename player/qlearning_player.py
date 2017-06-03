@@ -3,6 +3,7 @@ from copy import deepcopy
 
 import gameplay
 from board import Board
+from player.quantity import Quantity
 from player.random_player import RandomPlayer
 
 
@@ -18,7 +19,7 @@ class QlearningPlayer:
         self._alpha = alpha
         self._gamma = 0.9
         self._total_game_count = 0
-        self._q = {}
+        self._q = Quantity()
         self._last_board = None
         self._last_move = None
 
@@ -52,7 +53,7 @@ class QlearningPlayer:
         else:
             qs = []
             for position in positions:
-                qs.append(self.get_q(tuple(self._last_board.flattend_data()), position))
+                qs.append(self._q.get(tuple(self._last_board.flattend_data()), position))
 
             # for debug
             # if self._total_game_count > 9000 and self._total_game_count % 300 == 0:
@@ -74,10 +75,7 @@ class QlearningPlayer:
 
 
     def get_q(self, state, act):
-        # encourage exploration; "optimistic" 1.0 initial values
-        if self._q.get((state, act)) is None:
-            self._q[(state, act)] = self.INITIAL_Q
-        return self._q.get((state, act))
+        return self._q.get(state, act)
 
 
     def getGameResult(self, board_data):
@@ -115,11 +113,11 @@ class QlearningPlayer:
     def learn(self, s, a, r, fs, game_ended):
 
         flattend_data = s.flattend_data()
-        pQ = self.get_q(tuple(flattend_data), a)
+        pQ = self._q.get(tuple(flattend_data), a)
 
         list = []
         for position in fs.valid_positions(self):
-            list.append(self.get_q(tuple(fs.flattend_data()), position))
+            list.append(self._q.get(tuple(fs.flattend_data()), position))
 
         # print(list)
 
@@ -137,8 +135,8 @@ class QlearningPlayer:
             #     max_q_new = max(list)
             max_q_new = max(list)
 
-
-        self._q[(tuple(flattend_data), a)] = pQ + self._alpha * ((r + self._gamma * max_q_new) - pQ)
+        new_q = pQ + self._alpha * ((r + self._gamma * max_q_new) - pQ)
+        self._q.set(tuple(flattend_data), a, new_q)
 
 
     def change_to_battle_mode(self):
