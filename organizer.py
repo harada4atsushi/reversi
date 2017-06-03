@@ -70,11 +70,11 @@ class Organizer:
                 (p1time, p2time) = (p2time, p1time)
                 (p1realTime, p2realTime) = (p2realTime, p1realTime)
 
-            # res = score(board) + (board,)
+                if self._show_board:
+                    board.print()
 
-
-            if self._show_board:
-                board.print()
+            # if self._show_board:
+            #     board.print()
 
             res = board.score()
 

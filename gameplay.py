@@ -133,7 +133,7 @@ if __name__ == "__main__":
     reversed = ""
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--p1', default='ql', type=str)
+    parser.add_argument('--p1', default='random', type=str)
     parser.add_argument('--p2', default='random', type=str)
     args = parser.parse_args()
 
@@ -156,8 +156,8 @@ if __name__ == "__main__":
     #     p2 = nextMoveR
 
     from organizer import Organizer
-    organizer = Organizer(nplay=3000, show_board=False, show_result=False)
-    # organizer = Organizer()
+    # organizer = Organizer(nplay=3000, show_board=False, show_result=False)
+    organizer = Organizer()
     organizer.play_game(p1, p2, verbose, clockTime)
 
     # 学習済みのQ-Learningプレイヤーで再度戦わせる
