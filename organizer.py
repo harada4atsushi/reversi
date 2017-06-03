@@ -36,9 +36,7 @@ class Organizer:
         draw_count = 0
 
         for i in range(0, self._nplay):
-            # (p2, p1) = (p1, p2)
-            p2 = player1
-            p1 = player2
+            (p2, p1) = (p1, p2)
 
             if self._show_board:
                 print('先攻: %s(%s) vs 後攻: %s(%s)' % (p1.name, p1.color, p2.name, p2.color))
