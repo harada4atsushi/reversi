@@ -4,10 +4,11 @@ from copy import deepcopy
 
 from board import Board
 from gameplay import newBoard, valid, doMove
+from player.qlearning_player import QlearningPlayer
 
 
 class Organizer:
-    def __init__(self, show_board=True, show_result=True, nplay=1, stat=100):
+    def __init__(self, show_board=True, show_result=True, nplay=1, stat=100, debug=False):
         self._show_board = show_board
         self._show_result = show_result
         self._nplay = nplay
@@ -71,7 +72,10 @@ class Organizer:
                 (p1realTime, p2realTime) = (p2realTime, p1realTime)
 
                 if self._show_board:
-                    board.print()
+                    if isinstance(p1, QlearningPlayer):
+                        board.print(qplayer=p1)
+                    else:
+                        board.print()
 
             # if self._show_board:
             #     board.print()

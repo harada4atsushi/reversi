@@ -5,11 +5,21 @@ class Board:
     def __init__(self, board_data):
         self.board_data = board_data
 
-    def print(self):
+    def print(self, qplayer=None):
         """ Print a board, with letters and numbers as guides """
-        print("  " + " ".join(map(chr, range(ord('A'), ord('D') + 1))))
-        for (x,y) in zip(range(1,9), self.board_data):
-            print(str(x) + ' ' + self.to_circle(" ".join(y)))
+        print("   " + "  ".join(map(chr, range(ord('A'), ord('D') + 1))))
+        for (x, y) in zip(range(1,9), self.board_data):
+            row = y
+            if qplayer is not None:
+                row = []
+                for i, piece in enumerate(y):
+                    if piece == '.':
+                        piece = qplayer.get_q(tuple(self.flattend_data()), (x,i))
+                    row.append(str(piece))
+
+            y_str = self.to_circle("  ".join(row))
+
+            print(str(x) + '  ' + y_str)
         print("Black = %d, White = %d" % self.score())
 
         # For fun, here is a one-line board printer, without the
